@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Run Docker container
         run: |
-            docker run -it -e EMAIL_PASSWORD_PAIRS=${{ secrets.EMAIL_PASSWORD_PAIRS }} pavelgural/mega-auth:0.0.1
+            docker run -e EMAIL_PASSWORD_PAIRS=${{ secrets.EMAIL_PASSWORD_PAIRS }} pavelgural/mega-auth:0.0.1
