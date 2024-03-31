@@ -1,0 +1,15 @@
+---
+name: Mega auth
+on:
+  schedule:
+    # Runs at 00:00 UTC on the first day of every month
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  mega-auth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Docker container
+        run: |
+            docker run -it -e EMAIL_PASSWORD_PAIRS=${{ secrets.EMAIL_PASSWORD_PAIRS }} pavelgural/mega-auth:0.0.1
