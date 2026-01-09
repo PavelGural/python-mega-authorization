@@ -2,8 +2,8 @@
 name: Mega auth
 on:
   schedule:
-    # Runs at 00:00 UTC on the first day of every month
-    - cron: '0 0 1 * *'
+    # Runs twice of every month (1 and 15)
+    - cron: '0 0 1,15 * *'
   workflow_dispatch:
 
 jobs:
