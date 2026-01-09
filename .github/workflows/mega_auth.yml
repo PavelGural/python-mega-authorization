@@ -12,5 +12,5 @@ jobs:
     steps:
         - name: Run Docker container and partially mask output
           run: |
-            OUTPUT=$(docker run -e EMAIL_PASSWORD_PAIRS=${{ secrets.EMAIL_PASSWORD_PAIRS }} pavelgural/mega-auth:0.0.1)
+            OUTPUT=$(docker run -e EMAIL_PASSWORD_PAIRS="${{ secrets.EMAIL_PASSWORD_PAIRS }}" pavelgural/mega-auth:0.0.1)
             echo "$OUTPUT" | sed -E 's/(Login successful for )(.).*/\1\2***/'
