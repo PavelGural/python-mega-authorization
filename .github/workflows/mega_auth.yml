@@ -14,4 +14,4 @@ jobs:
           env:
             EMAIL_PASSWORD_PAIRS: ${{ secrets.EMAIL_PASSWORD_PAIRS }}
           run: |
-            docker run --platform linux/arm64 -e EMAIL_PASSWORD_PAIRS="$EMAIL_PASSWORD_PAIRS" pavelgural/mega-auth:0.0.2
+            docker run --platform linux/arm64 -e EMAIL_PASSWORD_PAIRS="$EMAIL_PASSWORD_PAIRS" pavelgural/mega-auth:0.0.1
