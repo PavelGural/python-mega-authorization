@@ -40,20 +40,23 @@ for i in $(seq 0 $(($ACCOUNT_COUNT - 1))); do
     EMAIL=$(echo "$EMAIL_PASSWORD_PAIRS" | jq -r ".[$i].email")
     PASSWORD=$(echo "$EMAIL_PASSWORD_PAIRS" | jq -r ".[$i].password")
     
-    echo "[$(($i + 1))/$ACCOUNT_COUNT] Attempting login for $EMAIL"
+    # Fully mask the email for security
+    MASKED_EMAIL="***"
+    
+    echo "[$(($i + 1))/$ACCOUNT_COUNT] Attempting login for $MASKED_EMAIL"
     
     # Logout first to ensure clean state
     mega-logout 2>/dev/null || true
     
     # Attempt login and capture output
     if mega-login "$EMAIL" "$PASSWORD" 2>&1 | grep -q "Login complete\|Fetching nodes"; then
-        echo "✓ Login successful for $EMAIL"
+        echo "✓ Login successful for $MASKED_EMAIL"
         SUCCESS_COUNT=$(($SUCCESS_COUNT + 1))
         
         # Logout after successful login to free the session
         mega-logout 2>/dev/null || true
     else
-        echo "✗ Failed to log in for $EMAIL"
+        echo "✗ Failed to log in for $MASKED_EMAIL"
         FAILED_COUNT=$(($FAILED_COUNT + 1))
     fi
     
