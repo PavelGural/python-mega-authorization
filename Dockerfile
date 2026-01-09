@@ -1,16 +1,29 @@
-# Use the smallest official Python base image (based on Alpine Linux)
-# Use 3.10-alpine to avoid conflict with 'tenacity' python package
-FROM python:3.10-alpine
+# Use Ubuntu 25.10 for ARM64 support
+FROM ubuntu:25.10
 
-# Set environment variables PYTHONDONTWRITEBYTECODE and PYTHONUNBUFFERED to prevent writing .pyc files and to ensure that Python output is sent straight to the terminal
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Prevent interactive prompts during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    jq \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY . .
+# Copy the script
+COPY mega_login.sh .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Make the script executable
+RUN chmod +x mega_login.sh
 
-ENTRYPOINT ["python"]
-CMD ["src/mega_auth.py"]
+# Install MEGAcmd for ARM64
+RUN wget https://mega.nz/linux/repo/xUbuntu_25.10/arm64/megacmd-xUbuntu_25.10_arm64.deb && \
+    apt-get update && \
+    apt-get install -y ./megacmd-xUbuntu_25.10_arm64.deb && \
+    rm megacmd-xUbuntu_25.10_arm64.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+ENTRYPOINT ["/app/mega_login.sh"]
